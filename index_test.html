@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js - pointerlock controls</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+		<link rel="stylesheet" type="text/css" href="static/bootstrap.min.css?v=1">
+		<style>
+			html, body {
+				width: 100%;
+				height: 100%;
+			}
+
+			body {
+				background-color: #ffffff;
+				margin: 0;
+				overflow: hidden;
+				font-family: arial;
+			}
+			.viewer {
+				height: 100%;
+				width: 100%;
+			}
+
+			.col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+				padding: 0px;
+			}
+
+			.previewColor {
+				width: 20px;
+				height: 20px;
+				border-radius: 3px;
+			}
+
+			.btn-group {
+				flex-wrap: wrap;
+			}
+
+		</style>
+	</head>
+	<body>
+		<script src="static/jquery-3.1.1.min.js"></script>
+		<script src="static/bootstrap.min.js?v=1"></script>
+		<script src="static/three.js"></script>
+        <script src="static/OrbitControls.js"></script>
+		<script src="static/WebGL.js"></script>
+
+		<script src="static/OBJLoader.js"></script>
+		<script src="static/MTLLoader.js"></script>
+
+		<div class="">
+			<div class="" style="float:left;">
+				<div class="viewer"></div>
+			</div>
+
+			<div class="" style="float:left;width:300px;">
+				<div class="sidebar">
+					<div id="accordion">
+						<div class="card">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									STYLE
+									</button>
+								</h5>
+							</div>
+
+								<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+									<div class="card-body">
+										<div class="btn-group btn-group-toggle" data-toggle="buttons">
+										  <label class="btn btn-secondary">
+											<input type="radio" name="style" id="option1" autocomplete="off" value="aframe">A-Frame
+										  </label>
+										  <label class="btn btn-secondary active">
+											<input type="radio" name="style" id="option2" autocomplete="off" value="classic" checked>Classic A-Frame
+										  </label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						<div class="card">
+							<div class="card-header" id="headingTwo">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+									SIZE
+									</button>
+								</h5>
+							</div>
+							<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+								<div class="card-body">
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary" style="display:none;">
+										<input type="radio" name="size" id="option1" autocomplete="off" value="10x10">10x10
+									  </label>
+									  <label class="btn btn-secondary active">
+										<input type="radio" name="size" id="option2" autocomplete="off" value="10x12" checked >10x12
+									  </label>
+									  <label class="btn btn-secondary">
+										<input type="radio" name="size" id="option3" autocomplete="off" value="10x14" >10x14
+									  </label>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-header" id="headingThree">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+									DOORS, WINDOWS, EXTERIOR
+									</button>
+								</h5>
+							</div>
+							<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+								<div class="card-body">
+									<div class="btn btn-info" onclick="createDoor()">Add Door</div>
+									<div class="btn btn-info" onclick="createWindow()">Add Window</div>
+
+									<br/><br/>
+									<label>Door Colors</label>
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="e1dcbf">
+										  <div class="previewColor" style="background:#e1dcbf" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="a2bfcd">
+										  <div class="previewColor" style="background:#a2bfcd" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="b0ab98">
+										  <div class="previewColor" style="background:#b0ab98" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="f6f0cc">
+										  <div class="previewColor" style="background:#f6f0cc" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="adaeb2">
+										  <div class="previewColor" style="background:#adaeb2" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="dad5ca">
+										  <div class="previewColor" style="background:#dad5ca" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="bcc1aa">
+										  <div class="previewColor" style="background:#bcc1aa" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="f0ebd7">
+										  <div class="previewColor" style="background:#f0ebd7" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="doorcolor" id="option1" autocomplete="off" value="fffef9">
+										  <div class="previewColor" style="background:#fffef9" ></div>
+									  </label>
+									</div>
+
+									<br/><br/>
+									<label>Window Options</label>
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary active">
+										<input type="radio" name="shutter" id="option1" autocomplete="off" value="on" checked>Shutters
+									  </label>
+									  <label class="btn btn-secondary">
+										<input type="radio" name="shutter" id="option2" autocomplete="off" value="off">No Shutters
+									  </label>
+									</div>
+
+									<br/><br/>
+									<label>Window Colors</label>
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="e1dcbf">
+										  <div class="previewColor" style="background:#e1dcbf" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="a2bfcd">
+										  <div class="previewColor" style="background:#a2bfcd" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="b0ab98">
+										  <div class="previewColor" style="background:#b0ab98" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="f6f0cc">
+										  <div class="previewColor" style="background:#f6f0cc" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="adaeb2">
+										  <div class="previewColor" style="background:#adaeb2" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="dad5ca">
+										  <div class="previewColor" style="background:#dad5ca" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="bcc1aa">
+										  <div class="previewColor" style="background:#bcc1aa" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="f0ebd7">
+										  <div class="previewColor" style="background:#f0ebd7" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="windowcolor" id="option1" autocomplete="off" value="fffef9">
+										  <div class="previewColor" style="background:#fffef9" ></div>
+									  </label>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-header" id="headingFour">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+									COLOR
+									</button>
+								</h5>
+							</div>
+							<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+								<div class="card-body">
+									<label>Siding Colors</label>
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="e1dcbf">
+										  <div class="previewColor" style="background:#e1dcbf" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="a2bfcd">
+										  <div class="previewColor" style="background:#a2bfcd" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="b0ab98">
+										  <div class="previewColor" style="background:#b0ab98" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="f6f0cc">
+										  <div class="previewColor" style="background:#f6f0cc" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="adaeb2">
+										  <div class="previewColor" style="background:#adaeb2" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="dad5ca">
+										  <div class="previewColor" style="background:#dad5ca" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="bcc1aa">
+										  <div class="previewColor" style="background:#bcc1aa" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="f0ebd7">
+										  <div class="previewColor" style="background:#f0ebd7" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="sidingcolor" id="option1" autocomplete="off" value="fffef9">
+										  <div class="previewColor" style="background:#fffef9" ></div>
+									  </label>
+									</div>
+
+
+									<br/><br/>
+									<label>Trim Colors</label>
+									<div class="btn-group btn-group-toggle" data-toggle="buttons">
+									  <label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="e1dcbf">
+										  <div class="previewColor" style="background:#e1dcbf" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="a2bfcd">
+										  <div class="previewColor" style="background:#a2bfcd" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="b0ab98">
+										  <div class="previewColor" style="background:#b0ab98" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="f6f0cc">
+										  <div class="previewColor" style="background:#f6f0cc" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="adaeb2">
+										  <div class="previewColor" style="background:#adaeb2" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="dad5ca">
+										  <div class="previewColor" style="background:#dad5ca" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="bcc1aa">
+										  <div class="previewColor" style="background:#bcc1aa" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="f0ebd7">
+										  <div class="previewColor" style="background:#f0ebd7" ></div>
+									  </label>
+										<label class="btn btn-secondary">
+										<input type="radio" name="trimcolor" id="option1" autocomplete="off" value="fffef9">
+										  <div class="previewColor" style="background:#fffef9" ></div>
+									  </label>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<div class="card">
+							<div class="card-header" id="headingFive">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+									TOTAL
+									</button>
+								</h5>
+							</div>
+							<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+								<div class="card-body totalcost">
+
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			var PATH = 'static/objects/';
+			var context = $('.viewer');
+			context.width(window.innerWidth - 300);
+			context.height(window.innerHeight);
+
+			var SCENE = new THREE.Scene();
+			SCENE.background = new THREE.Color( 0xcccccc );
+			//SCENE.fog = new THREE.Fog( 0xa9b8bf, 10, 800);
+
+			//Create a WebGLRenderer and turn on shadows in the renderer
+			var RENDERER = new THREE.WebGLRenderer({
+				antialias: true
+			});
+
+			RENDERER.setPixelRatio( window.devicePixelRatio );
+			RENDERER.setSize( context.width(), window.innerHeight );
+			RENDERER.shadowMap.enabled = true;
+			RENDERER.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
+
+			context.append( RENDERER.domElement );
+
+			CAMERA = new THREE.PerspectiveCamera( 60, context.width() / window.innerHeight, 1, 5000 );
+			CAMERA.position.set( 0, 50, 100 );
+			CONTROLS = new THREE.OrbitControls( CAMERA, RENDERER.domElement );
+
+			//Create a DirectionalLight and turn on shadows for the light
+			var light = new THREE.DirectionalLight( 0xffffff, 1, 100 );
+			light.position.set( 0, 1, 0 ); 			//default; light shining from top
+			light.castShadow = true;            // default false
+			SCENE.add( light );
+
+			//Set up shadow properties for the light
+			light.shadow.mapSize.width = 512;  // default
+			light.shadow.mapSize.height = 512; // default
+			light.shadow.camera.near = 0.5;    // default
+			light.shadow.camera.far = 500;     // default
+
+			loadOBJModel(PATH, 'shed_10_12', {x:1, y:1, z:1}, {x:10, y:10}, function(object){}.bind(this));
+
+			/*
+			//Create a sphere that cast shadows (but does not receive them)
+			var sphereGeometry = new THREE.SphereBufferGeometry( 5, 32, 32 );
+			var sphereMaterial = new THREE.MeshStandardMaterial( { color: 0xff0000 } );
+			var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+			sphere.castShadow = true; //default is false
+			sphere.receiveShadow = true; //default
+			SCENE.add( sphere );
+			*/
+
+			//Create a plane that receives shadows (but does not cast them)
+			var planeGeometry = new THREE.PlaneBufferGeometry( 20, 20, 32, 32 );
+			var planeMaterial = new THREE.MeshStandardMaterial( { color: 0x00ff00 } )
+			var plane = new THREE.Mesh( planeGeometry, planeMaterial );
+			plane.position.set(5, -20, 0);
+			plane.rotateX(-45);
+			plane.castShadow = true;
+			plane.receiveShadow = true;
+			SCENE.add( plane );
+
+			//Create a helper for the shadow camera (optional)
+			var helper = new THREE.CameraHelper( light.shadow.camera );
+			SCENE.add( helper );
+
+			animate();
+
+			function animate() {
+				requestAnimationFrame( animate );
+				CONTROLS.update();
+				render();
+			}
+
+
+			function render() {
+				RENDERER.render( SCENE, CAMERA );
+			}
+
+
+
+function loadOBJModel(path, name, scale, repeat, callback){
+    var mtlLoader = new THREE.MTLLoader();
+    mtlLoader.setPath(path);
+    mtlLoader.load(name + '.mtl', function (tempMaterials) {
+
+        tempMaterials.preload();
+        //materials.materials.default.map.magFilter = THREE.NearestFilter;
+        //materials.materials.default.map.minFilter = THREE.LinearFilter;
+
+        var objLoader = new THREE.OBJLoader();
+        objLoader.setMaterials(tempMaterials);
+        objLoader.setPath(path);
+
+        objLoader.load(name + '.obj', function (object) {
+
+            setObjectProperties(object, name, scale, repeat);
+
+            console.log("Loaded: " + name);
+
+			SCENE.add(object);
+
+            if (typeof(callback) != 'undefined'){
+                callback(object);
+            }
+
+
+        });
+
+    });
+}
+
+function setObjectProperties(object, name, scale, repeat){
+    object.name = name;
+    object.scale.set(scale.x, scale.y, scale.z);
+
+    for (var i = 0; i < object.children.length; i++){
+        var child = object.children[i];
+
+        child.castShadow = true;
+		child.receiveShadow = true;
+
+        if (typeof(child.material.length) == "undefined"){
+            mat = child.material;
+            mat.side = THREE.DoubleSide;
+            if (mat.map){
+                mat.map.repeat.x = repeat.x;
+                mat.map.repeat.y = repeat.y;
+            }
+
+            //MATERIALS.push(mat);
+        } else {
+            for (var j in child.material){
+                mat = child.material[j];
+                mat.side = THREE.DoubleSide;
+                if (mat.map){
+                    mat.map.repeat.x = repeat.x;
+                    mat.map.repeat.y = repeat.y;
+                }
+                //MATERIALS.push(mat);
+            }
+        }
+    }
+}
+
+		</script>
+	</body>
+</html>
+
